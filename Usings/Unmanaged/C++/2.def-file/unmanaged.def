@@ -1,0 +1,4 @@
+LIBRARY unmanaged
+EXPORTS
+	world
+	calculate
