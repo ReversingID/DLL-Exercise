@@ -6,7 +6,7 @@ Beberapa contoh kasus yang dapat diselesaikan menggunakan DLL Injection. Setiap 
 
 DLL Injection bekerja dengan cara menipu / memaksa sebuah proses untuk memuat suatu DLL yang dikehendaki. Kode di dalam DLL akan dieksekusi sebagai bagian dari proses target dan akan dapat melakukan berbagai hal yang dapat dilakukan oleh proses.
 
-Sebagaimana yang telah dijelaskan pada file [attack.md](attack.md), DLL Injection digunakan untuk memengaruhi perilaku sebuah proses secara langsung.
+Sebagaimana yang telah dijelaskan pada file [attack.md](../attack.md), DLL Injection digunakan untuk memengaruhi perilaku sebuah proses secara langsung.
 
 Secara detail, setiap DLL yang dimuat akan menjalan sebuah entry-point. Bagaimana seandainya terdapat kode malicious yang melakukan perubahan terhadap kode ataupun data di proses asli?
 
