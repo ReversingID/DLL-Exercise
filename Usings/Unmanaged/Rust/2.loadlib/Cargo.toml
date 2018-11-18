@@ -1,0 +1,7 @@
+[package]
+name = "libload"
+version = "0.1.0"
+authors = ["xathrya <me@xathrya.id>"]
+
+[dependencies]
+libloading = "0.5"
