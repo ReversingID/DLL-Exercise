@@ -25,23 +25,21 @@ Langkah-langkah:
       DLL path sebagai argument.
 */
 
-int inject(const int pid, const char* dll_path);
+int inject (const int pid, const char* dll_path);
 
-int main(int argc, char* argv[])
+int main (int argc, char* argv[])
 {
-    int choice = 1;
-
     if (argc != 3) 
     {
-        fprintf(stderr, "[!] Should have 2 arguments!\n");
-        fprintf(stderr, "Usage: %s <PID> <dll path>", argv[0]);
+        fprintf (stderr, "[!] Should have 2 arguments!\n");
+        fprintf (stderr, "Usage: %s <PID> <dll path>", argv[0]);
         return 1;
     }
 
-    return inject(atoi(argv[1]), argv[2]);
+    return inject (atoi (argv[1]), argv[2]);
 }
 
-int inject(const int pid, const char* dll_path)
+int inject (const int pid, const char* dll_path)
 {
     HANDLE remote;
     HANDLE remote_thread;
@@ -53,25 +51,39 @@ int inject(const int pid, const char* dll_path)
     int    error_code;
     char   error_message_buffer[256];
 
-    printf("[+] Starting DLL Injector\n");
+    printf ("[+] Starting DLL Injector\n");
 
-    // [1] Open the remote process
+    /*
+        [1] buka akses ke remote process
+
+        Semua operasi yang akan dilakukan berikutnya terjadi di process target.
+        Untuk itu, process target harus dapat dimanipulasi dengan terlebih dahulu mendapatkan
+        akses ke process tersebut.
+    */
+
     // API: HANDLE OpenProcess(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
-    printf("[+] Get process handle for PID: %d\n", pid);
-    remote = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+    printf ("[+] Get process handle for PID: %d\n", pid);
+    remote = OpenProcess (PROCESS_ALL_ACCESS, FALSE, pid);
     if (remote == NULL)
     {
         error_code = GetLastError();
-        FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), error_message_buffer, 256, NULL);
-        fprintf(stderr, "[!] Cannot open the remote process!\nDetail: %d %s\n", error_code, error_message_buffer);
+        FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), error_message_buffer, 256, NULL);
+        fprintf (stderr, "[!] Cannot open the remote process!\nDetail: %d %s\n", error_code, error_message_buffer);
         return 1;
     }
-    printf("    [=] Handle obtained: %p\n", remote);
+    printf ("    [=] Handle obtained: %p\n", remote);
 
-    // [2] Allocating space in the process
+
+    /* 
+        [2] alokasikan ruang di process
+
+        Pada case ini, ruang memory dialokasikan untuk menyimpan path dan nama file DLL.
+        Process kemudian dipaksa melakukan loading terhadap DLL dengan memanfaatkan API.
+    */
+
     // API: LPVOID VirtualAllocEx(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
-    printf("[+] Allocating space for DLL path\n");
-    alloc_addr = VirtualAllocEx(remote, NULL, dll_path_len, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+    printf ("[+] Allocating space for DLL path\n");
+    alloc_addr = VirtualAllocEx (remote, NULL, dll_path_len, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
     if (alloc_addr == NULL)
     {
         CloseHandle(remote);
@@ -83,7 +95,14 @@ int inject(const int pid, const char* dll_path)
     }
     printf("    [=] Address allocated: %p\n", alloc_addr);
 
-    // [3] Write DLL path on remote process
+
+    /*
+        [3] tulis path DLL
+
+        path dan nama file DLL harus dapat dijangkau oleh aplikasi, baik secara absolute maupun
+        relative.
+    */
+
     // API: BOOL WriteProcessMemory(HANDLE hProcess, LPVOID lpBaseAddress, LPCVOID lpBuffer, SIZE_T nSize, SIZE_T * lpNumberOfBytesWritten);
     printf("[+] Writing DLL path to current process space\n");
     SIZE_T num_written;
@@ -100,7 +119,15 @@ int inject(const int pid, const char* dll_path)
     }
     printf("    [=] Writing success!\n");
 
-    // [4] Resolve address of kernel32.dll & LoadLibraryA function
+
+    /*
+        [4] Resolve address kernel32.dll & LoadLibraryA
+
+        API LoadLibraryA dibutuhkan untuk memuat DLL.
+        Fungsi ini didefinisikan di dalam kernel32.dll dan sebagian besar process memuat
+        library tersebut (default).
+    */
+
     // API: HMODULE GetModuleHandleA(LPCSTR lpModuleName);
     printf("[+] Resolving call specific functions and libraries\n");
     HMODULE kernel_handle_addr = GetModuleHandleA("kernel32.dll");
@@ -110,7 +137,14 @@ int inject(const int pid, const char* dll_path)
     void * load_lib = (LPVOID) GetProcAddress(kernel_handle_addr, "LoadLibraryA");
     printf("    [=] Resolved LoadLibraryA function at 0x%08x\n", load_lib);
 
-    // [5] Create new thread on remote target to execute LoadLibraryA with our DLL path as argument
+
+    /*
+        [5] Eksekusi LoadLibraryA sebagai thread baru.
+
+        LoadLibraryA() dipanggil sebagai thread baru dengan target path yang telah
+        dialokasikan.
+    */
+
     // API: HANDLE CreateRemoteThread(
     //              HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, 
     //              LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
