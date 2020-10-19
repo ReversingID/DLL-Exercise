@@ -5,19 +5,19 @@ DLL Injections Payload by Exercise
 
 * Compile victim.cpp (sebagai DLL) dan runme.cpp (sebagai .EXE).
 * Compile injector (pilih di [Loader](../Loader)).
-* Jalankan runme dan perhatikan PID yang diperlihatkan.
+* Jalankan `runme` dan perhatikan PID yang diperlihatkan.
 * Untuk setiap latihan, lakukan:
 
       - Compile DLL payload
       - Inject payload dengan `injector <PID> <DLL path>`
 
 
-### Exercise 1
+### Exercise 1 (Entrypoint)
 
 - Perhatikan apa yang terjadi ketika DLL injection terjadi.
 - Apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
 
-### Exercise 2
+### Exercise 2 (R/W Patch)
 
 - Periksa alamat dari variabel global di runme (menu 4).
 - Sesuaikan alamat variabel global di payload.
