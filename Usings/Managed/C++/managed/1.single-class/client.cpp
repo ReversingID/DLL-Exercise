@@ -1,5 +1,6 @@
 /*
-Client sederhana untuk menggunakan managed.dll (lihat bagian Creations/Managed)
+    Client sederhana untuk menggunakan managed.dll.
+    Lihat juga bagian Creations/Managed.
 
 Memanggil managed.dll yang memiliki fungsi:
     - world (static)
@@ -10,6 +11,9 @@ Compile:
 
 Run: 
     $ client.exe
+
+Note:
+    Ini adalah Managed C++, atau C++ dengan .NET Runtime.
 */
 
 // Impor DLL 
