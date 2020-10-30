@@ -1,16 +1,15 @@
 /*
-Ekspor tiga fungsi untuk diimpor oleh `runme`
+	Ekspor fungsi-fungsi yang digunakan oleh `program`.
 
 Compile:
-	[gcc]
-		(x64)
-		$ g++ -m64 -shared -o victim.dll victim.cpp
-
-		(x64)
-		$ g++ -m32 -shared -o victim.dll victim.cpp
-
 	[msvc]
-	$ cl /LD victim.cpp
+	$ cl /LD library.cpp
+
+	[clang]
+	(x64)
+	$ clang++ -m64 -shared -o library.dll library.cpp
+	(x86)
+	$ clang++ -m32 -shared -o library.dll library.cpp
 */
 
 #include <windows.h>
@@ -19,17 +18,17 @@ Compile:
 extern "C" {
 #endif
 
-int __declspec(dllexport) add(int a, int b)
+int __declspec(dllexport) add (int a, int b)
 {
 	return a + b;
 }
 
-int __declspec(dllexport) sub(int a, int b)
+int __declspec(dllexport) sub (int a, int b)
 {
     return a - b;
 }
 
-int __declspec(dllexport) mul(int a, int b)
+int __declspec(dllexport) mul (int a, int b)
 {
 	return a * b;
 }
