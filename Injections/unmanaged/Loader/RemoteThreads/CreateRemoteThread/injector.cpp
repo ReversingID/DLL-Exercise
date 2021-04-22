@@ -1,8 +1,16 @@
 /*
-Inject sebuah DLL ke sebuah proses
+    C++ Injector
+    Archive of Reversing.ID
+
+    Inject DLL ke process.
+    Menggunakan API CreateRemoteThread()
 
 Compile:
-    $ g++ injector.cpp -o injector
+    (clang)
+    $ clang++ injector.cpp -o injector
+
+    (msvc)
+    $ cl injector.cpp
 
 Run:
     $ injector <PID> <dll path>
