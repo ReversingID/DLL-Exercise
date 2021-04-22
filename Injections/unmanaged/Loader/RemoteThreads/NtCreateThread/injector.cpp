@@ -1,8 +1,16 @@
 /*
+    C++ Injector
+    Archive of Reversing.ID
+
     Inject sebuah DLL ke sebuah proses
+    Menggunakan API NtCreateThread
 
 Compile:
-    $ g++ injector.cpp -o injector
+    (clang)
+    $ clang++ injector.cpp -o injector
+
+    (msvc)
+    $ cl injector.cpp
 
 Run:
     $ injector <PID> <dll path>
@@ -57,6 +65,8 @@ int inject (const int pid, const char* dll_path);
 
 int main (int argc, char* argv[])
 {
+    printf ("DLL Injector written in C++\n");
+
     if (argc != 3) 
     {
         fprintf (stderr, "[!] Should have 2 arguments!\n");
@@ -169,9 +179,9 @@ int inject (const int pid, const char* dll_path)
 
     // API: HMODULE GetModuleHandleA (LPCSTR lpModuleName);
     // API: FARPROC GetProcAddress (HMODULE hModule,LPCSTR lpProcName);
-    kernel_handle_addr = GetModuleHandleA ("kernel32.dll");
-    ntdll_handle_addr  = GetModuleHandleA ("ntdll.dll");
-    load_lib = (LPVOID) GetProcAddress (kernel_handle_addr, "LoadLibraryA");
+    kernel_handle_addr  = GetModuleHandleA ("kernel32.dll");
+    ntdll_handle_addr   = GetModuleHandleA ("ntdll.dll");
+    load_lib            = (LPVOID) GetProcAddress (kernel_handle_addr, "LoadLibraryA");
     fn_NtCreateThreadEx = (lpNtCreateThreadEx) GetProcAddress (ntdll_handle_addr, "NtCreateThreadEx");
 
     printf ("[+] Resolving call specific functions and libraries\n");
