@@ -5,7 +5,8 @@ Ini adalah latihan melakukan injeksi dengan beberapa payload.
 
 #### Setup
 
-* Compile `library.cpp` menjadi `library.dll` dan `program.cpp` menjadi `program.exe`.
+* Compile `library.cpp` menjadi `library.dll`
+* Compile `program.cpp` menjadi `program.exe`.
 * Compile injector (pilih di [Loader](../Loader)).
 * Jalankan `program.exe` dan perhatikan PID yang diperlihatkan.
 * Untuk setiap latihan, lakukan:
@@ -21,6 +22,7 @@ Steps:
 
 - Perhatikan apa yang terjadi ketika DLL injection terjadi.
 - Apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
+- Unload `payload.dll` (menu 5) dan perhatikan apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
 
 ### Exercise 2 (Memory Patch)
 
@@ -39,8 +41,9 @@ Goal: modifikasi alamat fungsi pada IAT (Import Address Table)
 Steps:
 
 - Perhatikan alamat dari semua fungsi di modul (menu 2)
-- Perhatikan kembali alamat ketika DLL injection telah terjadi
+- Perhatikan kembali alamat ketika DLL injection telah terjadi.
 - Apakah IAT? Dan apakah yang telah kita lakukan terhadapnya?
+- Unload `payload.dll` (menu 5) dan perhatikan apakah yang terjadi pada IAT?
 
 ### Exercise 4 (Function Trampoline)
 

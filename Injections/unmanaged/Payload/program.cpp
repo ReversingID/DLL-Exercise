@@ -5,10 +5,10 @@ Compile:
 	(msvc)
 	$ cl /nologo program.cpp library.lib
 
-    [clang]
-    (x64)
+    (clang)
+    x64
     $ clang++ -m64 program.cpp -o program.exe -L. -llibrary
-    (x86)
+    x86
     $ clang++ -m32 program.cpp -o program.exe -L. -llibrary
 
 Run:
@@ -22,9 +22,11 @@ Run:
 #include <windows.h>
 
 //=== Forward Declarations ===========================================
+
 int f (int n);
 
 //=== Import Functions ===============================================
+
 #ifdef __cplusplus
 extern "C" {
 #endif 
@@ -45,9 +47,11 @@ typedef int (__stdcall* func_ptr)(int, int);
 func_ptr pointers[3];
 
 //=== Global Variables ===============================================
+
 int global = 135;
 
 //=== M A I N ========================================================
+
 int main()
 {
     int i = 0;
@@ -55,6 +59,7 @@ int main()
     int x, y;
 
     HMODULE  handle;
+    HINSTANCE payload;
 
     // Memuat modul DLL ================================================
     handle = GetModuleHandleA("library.dll");
@@ -71,6 +76,7 @@ int main()
         printf ("2. List functions\n");
         printf ("3. Call add,sub,mul (imported from library.dll)\n");
         printf ("4. Show value of global\n");
+        printf ("5. Unload payload.dll\n");
         printf ("0. Exit\n");
         printf ("Your choice? (1/2/3/4): ");
         scanf("%d", &choice);
@@ -107,6 +113,11 @@ int main()
             case 4:
                 // Exercise #2: ubah nilai variabel ini
                 printf ("(0x%p) global = %d\n", &global, global);
+                break;
+            case 5:
+                payload = GetModuleHandleA("payload.dll");
+                printf("payload.dll found at 0x%p\n", payload);
+                FreeLibrary (payload);
                 break;
             default:
                 printf ("No such choice!\n");
