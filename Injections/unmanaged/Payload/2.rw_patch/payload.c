@@ -1,29 +1,34 @@
 /*
-Inject DLL ini ke dalam proses.
-Pembacaan dan penulisan wilayah memory tertentu akan terjadi. Dalam kasus ini, 
-nilai variabel global akan dimodifikasi.
+    RW Patch
+    Archive of Reversing.ID
 
-Sesuaikan alamat variabel global sebelum melakukan kompilasi!!
+    Inject DLL ini ke dalam process.
+    Pembacaan dan penulisan wilayah memory tertentu akan terjadi.
+    Dalam kasus ini, nilai variabel global akan dimodifikasi.
+    
+    Sesuaikan alamat variabel global sebelum melakukan kompilasi.
 
 Compile:
-	[gcc]
-		(x64)
-		$ gcc -m64 -shared payload.c -o payload.dll
-		
-		(x86)
-		$ gcc -m32 -shared payload.c -o payload.dll
-
 	(msvc)
 	$ cl /nologo /LD payload.c
+
+    (clang)
+    $ clang -shared payload.c -o payload.dll
+    
+    (gcc)
+    $ gcc -shared payload.c -o payload.dll
 
 Inject:
     $ injector <PID> payload.dll
 */
+
 #include <windows.h>
 #include <stdio.h>
 
-// Lokasi variabel global
-// Pastikan alamat ini sesuai
+/*
+    Lokasi variabel global yang akan dibaca/ditulis.
+    Pastikan alamat berikut sesuai.
+*/
 #define ADDRESS 0x404010
 
 BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID lpres)
@@ -36,9 +41,9 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID lpres)
             global = (int*) ADDRESS;
 
             printf("\n\n");
-            printf("Nilai variabel global = %d\n", *global);    // Read
-            *global = 1337;                                     // Write
-            printf("Nilai variabel global = %d\n", *global);
+            printf("Nilai awal  variabel global = %d\n", *global);      // Read
+            *global = 1337;                                             // Write
+            printf("Nilai akhir variabel global = %d\n", *global);
             break;
         case DLL_PROCESS_DETACH:
             break;

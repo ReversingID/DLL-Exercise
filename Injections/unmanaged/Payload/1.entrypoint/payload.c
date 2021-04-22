@@ -1,21 +1,24 @@
 /*
-Inject DLL ini ke dalam proses.
-Sebuah messageBox akan tampil dengan sebuah pesan.
+    Simple Payload
+    Archive of Reversing.ID
+
+    Inject DLL ini ke dalam process.
+    Sebuah MessageBox akan tampil dengan sebuah pesan sesuai dengan state DLL.
 
 Compile:
-	[gcc]
-		(x64)
-		$ gcc -m64 -shared payload.c -o payload.dll
-		
-		(x86)
-		$ gcc -m32 -shared payload.c -o payload.dll
-
 	(msvc)
 	$ cl /nologo /LD payload.c
+
+    (clang)
+    $ clang -shared payload.c -o payload.dll
+
+    (gcc)
+    $ gcc -shared payload.c -o payload.dll
 
 Inject:
     $ injector <PID> payload.dll
 */
+
 #include <windows.h>
 
 /*
