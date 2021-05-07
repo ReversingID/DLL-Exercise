@@ -85,7 +85,25 @@ Questions:
 - Bagaimana struktur dalam for `PE`?
 - Apa yang telah terjadi saat DLL injection?
 
-### Exercise 4: Function Trampoline
+### Exercise 4: Memory Scanning
+
+Goal: mendapatkan alamat berisi array of byte.
+
+Tools:
+
+- Process Hacker 2
+
+Steps:
+
+- Periksa alamat dan 10 byte awal fungsi `f()` (menu 1)
+    - sesuaikan array `signature` di `payload.c`
+- Lakukan DLL injection
+    - catat semua `offset` beserta `region` yang ditampilkan
+- Buka `ProcessHacker` dan amati `modules` dari `program.exe`.
+    - cari rentang dimana setiap offset berada
+    - tuju offset dan konfirmasi bahwa array berada di offset tersebut.
+
+### Exercise 5: Function Trampoline
 
 Goal: hooking fungsi / mengarahkan pemanggilan fungsi ke implementasi lain.
 
@@ -93,7 +111,7 @@ Steps:
 
 ```Under construction```
 
-### Exercise 5: Argument Sniff
+### Exercise 6: Argument Sniff
 
 Goal: memeriksa dan mengubah nilai pada setiap argumen fungsi.
 
@@ -101,7 +119,7 @@ Steps:
 
 ```Under Construction```
 
-### Exercise 6: Return Value Sniff
+### Exercise 7: Return Value Sniff
 
 Goal: memodifikasi nilai kembalian fungsi
 
