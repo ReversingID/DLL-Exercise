@@ -45,21 +45,21 @@ DLL_THREAD_DETACH:
 #pragma comment(lib,"user32")
 #endif
 
-BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID lpres)
+BOOL WINAPI DllMain (HINSTANCE hinst, DWORD dwReason, LPVOID lpres)
 {
     switch (dwReason)
     {
         case DLL_PROCESS_ATTACH:
-            MessageBoxA(NULL, TEXT("DLL Injected! DllMain dipanggil dalam process attach."), TEXT("Salam"), MB_OK);
+            MessageBoxA (NULL, TEXT("DLL Injected! DllMain dipanggil dalam process attach."), TEXT("Salam"), MB_OK);
             break;
         case DLL_PROCESS_DETACH:
-            MessageBoxA(NULL, TEXT("DllMain dipanggil dalam process detach."), TEXT("Salam"), MB_OK);
+            MessageBoxA (NULL, TEXT("DllMain dipanggil dalam process detach."), TEXT("Salam"), MB_OK);
             break;
         case DLL_THREAD_ATTACH:
-            MessageBoxA(NULL, TEXT("DllMain dipanggil dalam thread attach."), TEXT("Salam"), MB_OK);
+            MessageBoxA (NULL, TEXT("DllMain dipanggil dalam thread attach."), TEXT("Salam"), MB_OK);
             break;
         case DLL_THREAD_DETACH:
-            MessageBoxA(NULL, TEXT("DllMain dipanggil dalam thread detach."), TEXT("Salam"), MB_OK);
+            MessageBoxA (NULL, TEXT("DllMain dipanggil dalam thread detach."), TEXT("Salam"), MB_OK);
             break;
     }
 	return 1;

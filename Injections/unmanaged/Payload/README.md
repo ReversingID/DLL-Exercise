@@ -11,20 +11,47 @@ Ini adalah latihan melakukan injeksi dengan beberapa payload.
 * Jalankan `program.exe` dan perhatikan PID yang diperlihatkan.
 * Untuk setiap latihan, lakukan:
 
-      - Compile DLL payload
-      - Inject payload dengan `injector <PID> <DLL path>`
+    - Compile DLL payload
+    - Inject payload dengan `injector <PID> <DLL path>`
 
-### Exercise 1 (Entrypoint)
+### Exercise 0: (Entrypoint)
 
 Goal: berhasil injeksi DLL dan memunculkan MessageBox
 
+Tools:
+
+- Process Hacker 2
+
 Steps:
 
-- Perhatikan apa yang terjadi ketika DLL injection terjadi.
-- Apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
-- Unload `payload.dll` (menu 5) dan perhatikan apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
+- Buka `ProcessHacker2` dan amati daftar module DLL yang telah dimuat `program.exe`
+    - apa saja module DLL yang dimuat?
+- Lakukan DLL injection dan perhatikan perubahan yang terjadi.
+    - pesan apa yang muncul?
+    - apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
+- Kembali amati module pada `program.exe`
+    - apakah ada `payload.dll`?
+- Unload `payload.dll` (menu 5)
+    - pesan apa yang muncul?
+    - apakah entrypoint (DllMain / _DllMainCRTStartup) dieksekusi?
 
-### Exercise 2 (Memory Patch)
+### Exercise 1: Self-Unload DLL
+
+Goal: unload DLL berdasarkan kondisi tertentu (key ditekan)
+
+Tools:
+
+- Process Hacker 2
+
+Steps:
+
+- Lakukan DLL injection dan buka `ProcessHacker2` untuk mengamati daftar module.
+    - apakah `payload.dll` telah dimuat?
+- Tekan tombol `CapsLock`
+    - apa pesan yang muncul?
+    - apakah `payload.dll` masih ada?
+
+### Exercise 2: (Memory Patch)
 
 Goal: baca tulis memory
 
@@ -61,7 +88,7 @@ Steps:
 
 ```Under Construction```
 
-### Exercise 6
+### Exercise 6 (Return Value Sniff)
 
 Goal: memodifikasi nilai kembalian fungsi
 
