@@ -14,7 +14,7 @@ Ini adalah latihan melakukan injeksi dengan beberapa payload.
     - Compile DLL payload
     - Inject payload dengan `injector <PID> <DLL path>`
 
-### Exercise 0: (Entrypoint)
+### Exercise 0: Entry Point
 
 Goal: berhasil injeksi DLL dan memunculkan MessageBox
 
@@ -51,28 +51,41 @@ Steps:
     - apa pesan yang muncul?
     - apakah `payload.dll` masih ada?
 
-### Exercise 2: (Memory Patch)
+### Exercise 2: Memory Patch
 
 Goal: baca tulis memory
 
 Steps:
 
-- Periksa alamat dari variabel global di program.exe (menu 4).
-- Sesuaikan alamat variabel global di payload.
-- Perhatikan ketika DLL injection terjadi, apakah nilai variabel global berubah?
+- Periksa alamat dari variabel global di `program.exe` (menu 4).
+    - sesuaikan alamat variabel global di `payload.c`.
+- Lakukan DLL injection
+    - apakah nilai variabel global berubah?
 
-### Exercise 3 (IAT Patch)
+### Exercise 3: IAT Patch
 
 Goal: modifikasi alamat fungsi pada IAT (Import Address Table)
 
+Tools:
+
+- Process Hacker 2
+
 Steps:
 
-- Perhatikan alamat dari semua fungsi di modul (menu 2)
-- Perhatikan kembali alamat ketika DLL injection telah terjadi.
-- Apakah IAT? Dan apakah yang telah kita lakukan terhadapnya?
-- Unload `payload.dll` (menu 5) dan perhatikan apakah yang terjadi pada IAT?
+- Periksa alamat fungsi di `program.exe` (menu 2)
+    - apa alamat dari fungsi `add()`, `sub()`, dan `mul()`?
+- Lakukan DLL injection
+    - apa alamat dari fungsi `add()`, `sub()`, dan `mul()`?
+- Unload `payload.dll` (menu 5)
+    - apa alamat dari fungsi `add()`, `sub()`, dan `mul()`?
 
-### Exercise 4 (Function Trampoline)
+Questions:
+
+- Apakah yang dimaksud dengan IAT (`Import Address Table`)?
+- Bagaimana struktur dalam for `PE`?
+- Apa yang telah terjadi saat DLL injection?
+
+### Exercise 4: Function Trampoline
 
 Goal: hooking fungsi / mengarahkan pemanggilan fungsi ke implementasi lain.
 
@@ -80,7 +93,7 @@ Steps:
 
 ```Under construction```
 
-### Exercise 5 (Argument Sniff)
+### Exercise 5: Argument Sniff
 
 Goal: memeriksa dan mengubah nilai pada setiap argumen fungsi.
 
@@ -88,7 +101,7 @@ Steps:
 
 ```Under Construction```
 
-### Exercise 6 (Return Value Sniff)
+### Exercise 6: Return Value Sniff
 
 Goal: memodifikasi nilai kembalian fungsi
 

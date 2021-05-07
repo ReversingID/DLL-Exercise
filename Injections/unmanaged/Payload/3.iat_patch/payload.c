@@ -53,6 +53,7 @@ IAT_ENTRY *  patch_it (const char* target_func, LPVOID newfunction);
 void patch_restore (IAT_ENTRY * iat_entry);
 
 //========= Export Functions ===========================================
+
 int __declspec(dllexport) 
 add (int a, int b)
 {
@@ -75,6 +76,7 @@ mul (int a, int b)
 }
 
 //========= DLL Main ===================================================
+
 BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID lpres)
 {
     switch (dwReason)
@@ -122,13 +124,13 @@ void patch_init()
 IAT_ENTRY *  patch_it(const char* target_func, LPVOID newfunction)
 {
     IAT_ENTRY * retval = NULL;
-    IMAGE_IMPORT_DESCRIPTOR * iid;
+    PIMAGE_IMPORT_DESCRIPTOR iid;
 
     // Setiap file PE memiliki IMAGE_IMPORT_DESCRIPTOR masing-masing
     // Cari fungsi yang tepat dan kemudian di-patch!
     
     // Iterasi untuk setiap IMAGE_IMPORT_DESCRIPTOR (setiap DLL)
-    for (iid = imp_desc; iid->Name != NULL; iid++) 
+    for (iid = imp_desc; iid->Name != 0; iid++) 
     {
         // untuk setiap DLL, iterasi fungsi
         for (int func_idx = 0; *(func_idx + (LPVOID*)(iid->FirstThunk + (SIZE_T)module)) != NULL; func_idx++) 

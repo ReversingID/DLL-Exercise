@@ -23,7 +23,7 @@ Run:
 
 //=== Forward Declarations ===========================================
 
-int f (int n);
+void f (int n);
 
 //=== Import Functions ===============================================
 
@@ -58,6 +58,8 @@ int main()
     int choice = 0;
     int x, y;
 
+    char * aobdata;
+
     HMODULE  handle;
     HINSTANCE payload;
 
@@ -89,6 +91,13 @@ int main()
             case 1:
                 // Exercise 4#: function trampoline di f() 
                 printf ("f() ada di ( 0x%p )\n", f);
+                
+                aobdata = (char*)f;
+                printf ("10 byte awal dari f(): ");
+                for (i = 0; i < 10; i++)
+                    printf("%02x ", aobdata[i] & 0xFF);
+                printf("\n\n");
+
                 for (i = 0; i < 10; i++)
                 {
                     printf ("%d ", i);
@@ -98,9 +107,9 @@ int main()
                 break;
             case 2:
                 // Exercise #3: Ubah alamat fungsi di IAT (add,sub,mul) 
-                printf ("add ( 0x%p ) == pointers[0] ( 0x%p )\n", add, pointers[0]);
-                printf ("sub ( 0x%p ) == pointers[1] ( 0x%p )\n", sub, pointers[1]);
-                printf ("mul ( 0x%p ) == pointers[2] ( 0x%p )\n", mul, pointers[2]);
+                printf ("add (0x%p) == pointers[0] (0x%p)\n", add, pointers[0]);
+                printf ("sub (0x%p) == pointers[1] (0x%p)\n", sub, pointers[1]);
+                printf ("mul (0x%p) == pointers[2] (0x%p)\n", mul, pointers[2]);
                 break;
             case 3:
                 x = 15;
@@ -117,7 +126,8 @@ int main()
             case 5:
                 payload = GetModuleHandleA("payload.dll");
                 printf("payload.dll found at 0x%p\n", payload);
-                FreeLibrary (payload);
+                if (payload)
+                    FreeLibrary (payload);
                 break;
             default:
                 printf ("No such choice!\n");
@@ -128,7 +138,7 @@ int main()
     } while (choice != 0);
 }
 
-int f (int n)
+void f (int n)
 {
     printf ("Got number: %d\n", n);
 }
